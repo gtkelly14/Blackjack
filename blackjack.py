@@ -20,6 +20,7 @@ class Deck:
     cards = []
 
     def __init__(self):
+        self.cards = []
         for suit in self.suits:
             for rank in self.ranks:
                 self.cards.append(Card(suit, rank))
