@@ -82,12 +82,13 @@ class TestPlayer(unittest.TestCase):
     '''
     Test caese for Player aclass
     '''
+    player_name = 'Test Player'
 
     def test_init(self):
         """
         Test cases for initializing the class
         """
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
         self.assertEqual(player.name, "Test Player")
         self.assertEqual(player.money, 100)
 
@@ -99,13 +100,13 @@ class TestPlayer(unittest.TestCase):
         # Less than Max
         blackjack.input = lambda _: '75'
 
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
         amount = player.bet()
         self.assertEqual(amount, 75)
         self.assertEqual(player.money, 25)
 
         # Test > Max
-        player = blackjack.Player("Test Player", 50)
+        player = blackjack.Player(self.player_name, 50)
         amount = player.bet()
         self.assertEqual(amount, 0)
         self.assertEqual(player.money, 50)
@@ -114,7 +115,7 @@ class TestPlayer(unittest.TestCase):
         '''
         Test paths to determine hand value
         '''
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
         player.cards = [blackjack.Card(
             'Spades', 'Jack'), blackjack.Card('Spades', 'Ace')]
         self.assertEqual(player.get_hand_value(), 21)
@@ -136,7 +137,7 @@ class TestPlayer(unittest.TestCase):
 
         blackjack.input = lambda _: 'S'
         deck = blackjack.Deck()
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
         player.cards = [blackjack.Card(
             'Spades', '8'), blackjack.Card('Spades', 'Ace')]
         player.play(deck)
@@ -151,7 +152,7 @@ class TestPlayer(unittest.TestCase):
         deck = blackjack.Deck()
         deck.cards[51] = blackjack.Card('Clubs', '2')
 
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
 
         player.cards = [blackjack.Card(
             'Spades', '8'), blackjack.Card('Spades', 'Ace')]
@@ -167,7 +168,7 @@ class TestPlayer(unittest.TestCase):
         deck = blackjack.Deck()
         deck.cards[51] = blackjack.Card('Clubs', 'King')
 
-        player = blackjack.Player("Test Player", 100)
+        player = blackjack.Player(self.player_name, 100)
 
         player.cards = [blackjack.Card(
             'Spades', '10'), blackjack.Card('Spades', '8')]
@@ -180,7 +181,6 @@ class TestPlayer(unittest.TestCase):
         Revert input function in module back to original
         '''
 
-        print("Function Teardown")
         blackjack.input = input
 
 # Dealer
@@ -249,9 +249,6 @@ class TestDealer(unittest.TestCase):
         self.assertEqual(len(dealer.cards), 3)
         self.assertEqual(dealer.get_hand_value(), 23)
         self.assertTrue(dealer.busted)
-
-
-
 
     def teardown_method(self):
         '''

@@ -195,7 +195,6 @@ class Player:
                 break
 
             print('Please enter H or S')
-            continue
 
 
 class Dealer:
@@ -204,9 +203,6 @@ class Dealer:
     '''
     cards = []
     busted = False
-
-    def __init__(self):
-        pass
 
     def get_card(self, card):
         '''
