@@ -112,6 +112,8 @@ class Player:
 
                 if amount > self.money:
                     print(f'You do not have enough money to bet ${amount}')
+                    bet_placed = True
+                    return 0
 
                 else:
                     self.money -= amount
@@ -170,6 +172,12 @@ class Player:
         while continue_playing and not self.busted:
             print(
                 f'{self.name} you have  {self.get_hand_value()}')
+            
+            if self.get_hand_value() == 21:
+                print('Blackjack!')
+                continue_playing = False
+                break
+            
             if self.get_hand_value() > 21:
                 print('You have Busted')
                 self.busted = True
