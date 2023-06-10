@@ -115,10 +115,9 @@ class Player:
                     bet_placed = True
                     return 0
 
-                else:
-                    self.money -= amount
-                    bet_placed = True
-                    return amount
+                self.money -= amount
+                bet_placed = True
+                return amount
 
             except ValueError:
                 print('Please enter a number')
@@ -172,13 +171,12 @@ class Player:
         while continue_playing and not self.busted:
             print(
                 f'{self.name} you have  {self.get_hand_value()}')
-            
+
             if self.get_hand_value() == 21:
                 print('Blackjack!')
                 continue_playing = False
                 break
-            
-            
+
             if self.get_hand_value() > 21:
                 print('You have Busted')
                 self.busted = True
