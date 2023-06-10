@@ -79,10 +79,9 @@ class TestDeck(unittest.TestCase):
 
 
 class TestPlayer(unittest.TestCase):
-    """Test caese for Player aclass
-
-
-    """
+    '''
+    Test caese for Player aclass
+    '''
 
     def test_init(self):
         """
@@ -111,7 +110,7 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(amount, 0)
         self.assertEqual(player.money, 50)
 
-    def test_get_hand_value(self):
+    def test_player_get_hand_value(self):
         '''
         Test paths to determine hand value
         '''
@@ -138,7 +137,7 @@ class TestPlayer(unittest.TestCase):
         blackjack.input = lambda _: 'S'
         deck = blackjack.Deck()
         player = blackjack.Player("Test Player", 100)
-        player.cards = player.cards = [blackjack.Card(
+        player.cards = [blackjack.Card(
             'Spades', '8'), blackjack.Card('Spades', 'Ace')]
         player.play(deck)
         self.assertEqual(len(player.cards), 2)
@@ -186,8 +185,83 @@ class TestPlayer(unittest.TestCase):
 
 # Dealer
 
+
+class TestDealer(unittest.TestCase):
+    '''
+    Test Cases for Dealer
+
+    '''
+
+    def test_dealer_get_hand_value(self):
+        '''
+        Test paths to determine hand value
+        '''
+        dealer = blackjack.Dealer()
+        dealer.cards = [blackjack.Card(
+            'Spades', 'Jack'), blackjack.Card('Spades', 'Ace')]
+        self.assertEqual(dealer.get_hand_value(), 21)
+
+        dealer.cards = [blackjack.Card(
+            'Spades', '8'), blackjack.Card('Spades', 'Ace')]
+        self.assertEqual(dealer.get_hand_value(), 19)
+
+        dealer.cards.append(blackjack.Card('Spades', 'King'))
+        self.assertEqual(dealer.get_hand_value(), 19)
+
+        dealer.cards.append(blackjack.Card('Spades', '5'))
+        self.assertEqual(dealer.get_hand_value(), 24)
+
+    def test_play_stay(self):
+        '''
+        Hand Value of 18 - stay
+        '''
+        deck = blackjack.Deck()
+        dealer = blackjack.Dealer()
+        dealer.cards = [blackjack.Card(
+            'Spades', '8'), blackjack.Card('Spades', 'King')]
+        dealer.play(deck)
+        self.assertEqual(len(dealer.cards), 2)
+        self.assertEqual(dealer.get_hand_value(), 18)
+
+    def test_play_hit(self):
+        '''
+        Hand value of 16 - hit to 20
+        '''
+        deck = blackjack.Deck()
+        deck.cards[51] = blackjack.Card('Clubs', '4')
+        dealer = blackjack.Dealer()
+        dealer.cards = [blackjack.Card(
+            'Spades', '6'), blackjack.Card('Spades', 'King')]
+        dealer.play(deck)
+        self.assertEqual(len(dealer.cards), 3)
+        self.assertEqual(dealer.get_hand_value(), 20)
+
+    def test_play_bust(self):
+        '''
+        Hand value of 16 - hit to 23 - busted
+        '''
+        deck = blackjack.Deck()
+        deck.cards[51] = blackjack.Card('Clubs', '7')
+        dealer = blackjack.Dealer()
+        dealer.cards = [blackjack.Card(
+            'Spades', '6'), blackjack.Card('Spades', 'King')]
+        dealer.play(deck)
+        self.assertEqual(len(dealer.cards), 3)
+        self.assertEqual(dealer.get_hand_value(), 23)
+        self.assertTrue(dealer.busted)
+
+
+
+
+    def teardown_method(self):
+        '''
+        Revert input function in module back to original
+        '''
+
+        print("Function Teardown")
+        blackjack.input = input
+
+
 # Hand
-
-
 if __name__ == '__main__':
     unittest.main()

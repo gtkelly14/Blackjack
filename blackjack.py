@@ -178,6 +178,7 @@ class Player:
                 continue_playing = False
                 break
             
+            
             if self.get_hand_value() > 21:
                 print('You have Busted')
                 self.busted = True
